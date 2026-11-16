@@ -590,9 +590,11 @@ body.popup-open {
 
     </div>
 
-    <a href="/account" class="popup-action">
-      Complete account setup
-    </a>
+    <button type="button"
+  class="popup-action"
+  onclick="closeWelcomePopup()">
+  Complete account setup
+</button>
 
     <div class="popup-footer">
       Rewards are subject to platform eligibility rules and available
@@ -626,8 +628,11 @@ let toastTimer;
 document.addEventListener("click", function(event) {
 
   // Allow the welcome popup close button to work.
-  if (event.target.closest(".popup-close")) {
-    return;
+  if (
+  event.target.closest(".popup-close") ||
+  event.target.closest(".popup-action")
+) {
+  return;
   }
 
   const clickedElement = event.target.closest(
