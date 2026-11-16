@@ -13,12 +13,22 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Require the Render PostgreSQL connection URL.
+if (!process.env.DATABASE_URL) {
+  console.error("DATABASE_URL is missing. Add it in Render Environment Variables.");
+  process.exit(1);
+}
+
 // PostgreSQL connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL
-    ? { rejectUnauthorized: false }
-    : false
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+pool.on("error", (error) => {
+  console.error("Unexpected PostgreSQL pool error:", error);
 });
 
 // Session configuration
@@ -128,6 +138,8 @@ app.get("/home", (req, res) => {
 
 // SIGN UP
 app.post("/api/signup", async (req, res) => {
+  const client = await pool.connect();
+
   try {
     const { phone, email, username, password } = req.body;
 
@@ -163,8 +175,10 @@ app.post("/api/signup", async (req, res) => {
       });
     }
 
-    // Password is intentionally stored as plain text for this test stage.
-    const result = await pool.query(
+    // Password intentionally remains plain text for isolated testing.
+    await client.query("BEGIN");
+
+    const result = await client.query(
       `INSERT INTO linkearn_users
        (phone, email, username, password)
        VALUES ($1, $2, $3, $4)
@@ -174,24 +188,40 @@ app.post("/api/signup", async (req, res) => {
 
     const user = result.rows[0];
 
-    await pool.query(
+    await client.query(
       "INSERT INTO linkearn_wallets (user_id) VALUES ($1)",
       [user.id]
     );
 
-    await pool.query(
+    await client.query(
       "INSERT INTO linkearn_whatsapp (user_id) VALUES ($1)",
       [user.id]
     );
 
+    await client.query("COMMIT");
+
     req.session.userId = user.id;
 
-    res.status(201).json({
-      success: true,
-      message: "Account created successfully.",
-      redirect: "/home"
+    req.session.save((error) => {
+      if (error) {
+        console.error("Signup session error:", error);
+
+        return res.status(500).json({
+          success: false,
+          message: "Account created, but login session could not be saved."
+        });
+      }
+
+      return res.status(201).json({
+        success: true,
+        message: "Account created successfully.",
+        redirect: "/home"
+      });
     });
+
   } catch (error) {
+    await client.query("ROLLBACK").catch(() => {});
+
     if (error.code === "23505") {
       return res.status(409).json({
         success: false,
@@ -201,10 +231,13 @@ app.post("/api/signup", async (req, res) => {
 
     console.error("Signup error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Unable to create your account. Please try again."
     });
+
+  } finally {
+    client.release();
   }
 });
 
@@ -222,7 +255,7 @@ app.post("/api/login", async (req, res) => {
     }
 
     const result = await pool.query(
-      `SELECT id, username
+      `SELECT id, username, password
        FROM linkearn_users
        WHERE LOWER(email) = $1
           OR LOWER(username) = $1`,
@@ -238,12 +271,8 @@ app.post("/api/login", async (req, res) => {
 
     const user = result.rows[0];
 
-    const passwordResult = await pool.query(
-      "SELECT password FROM linkearn_users WHERE id = $1",
-      [user.id]
-    );
-
-    if (passwordResult.rows[0].password !== password) {
+    // Plain-text comparison retained for testing only.
+    if (user.password !== password) {
       return res.status(401).json({
         success: false,
         message: "Invalid login details."
@@ -252,15 +281,27 @@ app.post("/api/login", async (req, res) => {
 
     req.session.userId = user.id;
 
-    res.json({
-      success: true,
-      message: "Login successful.",
-      redirect: "/home"
+    req.session.save((error) => {
+      if (error) {
+        console.error("Login session error:", error);
+
+        return res.status(500).json({
+          success: false,
+          message: "Unable to save login session."
+        });
+      }
+
+      return res.json({
+        success: true,
+        message: "Login successful.",
+        redirect: "/home"
+      });
     });
+
   } catch (error) {
     console.error("Login error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Unable to log in. Please try again."
     });
@@ -287,6 +328,7 @@ app.get("/api/dashboard", requireLogin, async (req, res) => {
 
     if (result.rows.length === 0) {
       req.session.destroy(() => {});
+
       return res.status(401).json({
         success: false,
         message: "Account not found. Please log in again."
@@ -312,6 +354,7 @@ app.get("/api/dashboard", requireLogin, async (req, res) => {
         amountKobo: 0
       }
     });
+
   } catch (error) {
     console.error("Dashboard error:", error);
 
@@ -349,6 +392,7 @@ async function startServer() {
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`LinkEarn is running on port ${PORT}`);
     });
+
   } catch (error) {
     console.error("Could not start LinkEarn:", error);
     process.exit(1);
