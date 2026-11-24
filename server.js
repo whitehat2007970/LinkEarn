@@ -117,7 +117,7 @@ function normalizePhone(value) {
 
 // Frontend pages
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "login.html"));
+  res.sendFile(path.join(__dirname, "signup.html"));
 });
 
 app.get("/signup", (req, res) => {
