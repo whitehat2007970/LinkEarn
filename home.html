@@ -4,751 +4,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkEarn | Home</title>
+<title>LinkEarn - Account Review</title>
 
 <style>
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 body {
-  background: #f4f5f4;
-  color: #263746;
-  padding-bottom: 100px;
+    min-height: 100vh;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-header {
-  height: 100px;
-  padding: 20px 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
+.container {
+    background: white;
+    width: 100%;
+    max-width: 430px;
+    border-radius: 18px;
+    padding: 30px 25px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+/* LOADING SCREEN */
+
+#loadingScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
 }
 
 .logo {
-  font-size: 29px;
-  font-weight: 900;
-  color: #087d43;
-  letter-spacing: -1.5px;
+    width: 68px;
+    height: 68px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
 }
 
-.logo span {
-  color: #172d28;
+.loader {
+    width: 38px;
+    height: 38px;
+    border: 4px solid #dff5e7;
+    border-top: 4px solid #25D366;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 20px;
 }
 
-.profile-button {
-  width: 43px;
-  height: 43px;
-  border: 2px solid #172d28;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-  color: #087d43;
-  text-decoration: none;
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
-main {
-  width: 100%;
-  max-width: 650px;
-  margin: auto;
-  padding: 18px 20px;
+.loading-title {
+    color: #075E54;
+    font-size: 19px;
+    margin-bottom: 9px;
 }
 
-/* PROMOTIONAL BANNER */
-
-.banner {
-  background: linear-gradient(120deg, #087d43, #064d30);
-  border-radius: 25px;
-  min-height: 245px;
-  padding: 25px 22px;
-  color: white;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 27px;
+.loading-text {
+    color: #667781;
+    font-size: 13px;
 }
 
-.banner::after {
-  content: "₦";
-  position: absolute;
-  right: 15px;
-  bottom: -35px;
-  font-size: 190px;
-  font-weight: 900;
-  color: rgba(255,255,255,.08);
-}
+/* REVIEW SCREEN */
 
-.banner h2 {
-  font-size: 23px;
-  line-height: 1.4;
-  max-width: 85%;
-  position: relative;
-  z-index: 1;
-}
-
-.banner p {
-  font-size: 14px;
-  margin-top: 10px;
-  opacity: .9;
-  position: relative;
-  z-index: 1;
-}
-
-.banner-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 23px;
-  position: relative;
-  z-index: 2;
-}
-
-.banner-buttons button {
-  border: none;
-  border-radius: 30px;
-  padding: 12px 25px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.share-button {
-  background: white;
-  color: #087d43;
-}
-
-.team-button {
-  background: #d9f2df;
-  color: #087d43;
-}
-
-.income-line {
-  margin-top: 18px;
-  font-size: 16px;
-  position: relative;
-  z-index: 2;
-}
-
-/* WHATSAPP TASK */
-
-.task-card {
-  background: white;
-  border-radius: 23px;
-  padding: 19px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.035);
-}
-
-.whatsapp-icon {
-  width: 67px;
-  height: 67px;
-  flex-shrink: 0;
-  border-radius: 13px;
-  background: #e8f7ed;
-  display: grid;
-  place-items: center;
-  font-size: 36px;
-}
-
-.task-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.task-info h3 {
-  font-size: 17px;
-  margin-bottom: 8px;
-}
-
-.task-info p {
-  color: #087d43;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.start-button {
-  border: none;
-  background: #087d43;
-  color: white;
-  border-radius: 30px;
-  padding: 13px 17px;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-/* ACCOUNT OVERVIEW */
-
-.section-heading {
-  margin: 28px 2px 14px;
-  font-size: 18px;
-}
-
-.summary-card {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 15px;
-}
-
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 0;
-  border-bottom: 1px solid #edf0ed;
-  font-size: 14px;
-}
-
-.summary-row:last-child {
-  border-bottom: none;
-}
-
-.summary-row span:first-child {
-  color: #65736b;
-}
-
-.summary-row strong {
-  color: #087d43;
-  text-align: right;
-}
-
-.notice {
-  background: white;
-  border-radius: 13px;
-  padding: 15px;
-  margin-top: 20px;
-  font-size: 13px;
-  color: #69736f;
-  text-align: center;
-}
-
-.error {
-  color: #b42318;
-}
-
-/* BOTTOM NAVIGATION */
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  height: 85px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -5px 20px rgba(0,0,0,.04);
-  z-index: 10;
-}
-
-.nav-item {
-  text-decoration: none;
-  color: #69736f;
-  text-align: center;
-  font-size: 12px;
-  min-width: 55px;
-}
-
-.nav-icon {
-  display: block;
-  font-size: 25px;
-  margin-bottom: 6px;
-}
-
-.nav-item.active {
-  color: #087d43;
-  font-weight: bold;
-}
-
-.share-nav {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: #087d43;
-  color: white;
-  display: grid;
-  place-items: center;
-  font-size: 28px;
-  margin-top: -38px;
-  box-shadow: 0 5px 15px rgba(8,125,67,.25);
-  border: 5px solid white;
-  cursor: pointer;
-}
-
-/* WELCOME POPUP */
-
-.popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.58);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-}
-
-.popup-box {
-  width: 100%;
-  max-width: 520px;
-  max-height: 88vh;
-  overflow-y: auto;
-  background: linear-gradient(135deg, #fff0e9, #fff5e9);
-  border-radius: 12px;
-  padding: 27px 23px;
-  position: relative;
-  box-shadow: 0 12px 40px rgba(0,0,0,.2);
-  animation: popupShow .35s ease;
-}
-
-@keyframes popupShow {
-  from {
+#reviewScreen {
+    display: none;
     opacity: 0;
-    transform: translateY(20px) scale(.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+    transition: opacity 0.6s ease;
 }
 
-.popup-close {
-  position: absolute;
-  top: 9px;
-  right: 13px;
-  width: 35px;
-  height: 35px;
-  border: none;
-  border-radius: 50%;
-  background: #087d43;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
+h1 {
+    color: #075E54;
+    font-size: 25px;
+    margin-bottom: 12px;
 }
 
-.popup-title {
-  text-align: center;
-  font-size: 21px;
-  font-weight: 600;
-  margin: 5px 15px 25px;
-  color: #203247;
-  line-height: 1.4;
-}
-
-.popup-content p {
-  font-size: 15px;
-  line-height: 1.55;
-  color: #344052;
-  margin-bottom: 19px;
-}
-
-.popup-content strong {
-  color: #087d43;
-}
-
-.popup-action {
-  display: block;
-  width: 85%;
-  margin: 25px auto 12px;
-  padding: 15px 12px;
-  border: none;
-  border-radius: 11px;
-  background: linear-gradient(90deg, #087d43, #0a9a55);
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.popup-footer {
-  text-align: center;
-  font-size: 11px;
-  color: #777;
-  line-height: 1.5;
-}
-
-body.popup-open {
-  overflow: hidden;
-}
-
-/* UPDATE NOTIFICATION */
-
-.update-toast {
-  position: fixed;
-  bottom: 105px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  width: calc(100% - 40px);
-  max-width: 380px;
-  background: #202923;
-  color: white;
-  padding: 16px 18px;
-  border-radius: 12px;
-  font-size: 14px;
-  text-align: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,.2);
-  z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: .3s ease;
-}
-
-.update-toast.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-.hidden {
-  display: none !important;
-}
-
-@media (max-width: 380px) {
-  main {
-    padding: 15px;
-  }
-
-  .task-card {
-    gap: 9px;
-    padding: 13px;
-  }
-
-  .whatsapp-icon {
-    width: 52px;
-    height: 52px;
-    font-size: 29px;
-  }
-
-  .start-button {
-    padding: 11px;
-    font-size: 12px;
-  }
-
-  .banner h2 {
-    font-size: 20px;
-  }
-
-  .popup-box {
-    padding: 25px 18px;
-  }
-
-  .popup-content p {
+.subtitle {
+    color: #667781;
     font-size: 14px;
-  }
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.status {
+    background: #f0faf4;
+    border: 1px solid #d5f1df;
+    border-radius: 12px;
+    padding: 20px 15px;
+    margin-bottom: 22px;
+}
+
+.status-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.status h2 {
+    color: #008069;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.status p {
+    color: #667781;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.info {
+    text-align: left;
+    background: #f7f9fa;
+    padding: 17px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+}
+
+.info h3 {
+    color: #111b21;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.info p {
+    color: #667781;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+button {
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 9px;
+    background: #25D366;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.footer {
+    margin-top: 22px;
+    border-top: 1px solid #e9edef;
+    padding-top: 16px;
+    color: #8696a0;
+    font-size: 11px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">LINK<span>EARN</span></div>
-  <a href="/account" class="profile-button" aria-label="Account">♙</a>
-</header>
+<div class="container">
 
-<main>
+    <!-- LOADING SCREEN -->
+    <div id="loadingScreen">
 
-  <section class="banner">
-    <h2>Earn rewards with LinkEarn</h2>
-    <p>Connect your WhatsApp account and participate in weekly rewards.</p>
+        <div class="logo">
+            <svg viewBox="0 0 32 32"
+                 width="43" height="43"
+                 fill="white">
+                <path d="M16 3C8.82 3 3 8.82 3 16c0 2.3.61 4.55 1.77 6.52L3 29l6.68-1.75A12.94 12.94 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.7c-2 0-3.96-.54-5.65-1.56l-.4-.24-3.96 1.04 1.06-3.86-.26-.42A10.65 10.65 0 1 1 16 26.7z"/>
+            </svg>
+        </div>
 
-    <div class="banner-buttons">
-      <button class="share-button">Share</button>
-      <button class="team-button">My Team</button>
-    </div>
+        <div class="loader"></div>
 
-    <div class="income-line">
-      Account: <strong id="dashboardUsername">Loading...</strong>
-    </div>
-  </section>
+        <h2 class="loading-title">
+            Setting up your account...
+        </h2>
 
-  <section class="task-card">
-    <div class="whatsapp-icon">☏</div>
-
-    <div class="task-info">
-      <h3>WhatsApp</h3>
-      <p id="taskReward">Reward information is not available yet.</p>
-    </div>
-
-    <button class="start-button">Start task</button>
-  </section>
-
-  <h3 class="section-heading">Account overview</h3>
-
-  <section class="summary-card">
-    <div class="summary-row">
-      <span>Account balance</span>
-      <strong id="balance">500 NGN</strong>
-    </div>
-
-    <div class="summary-row">
-      <span>Total earned</span>
-      <strong id="totalEarned">500 NGN</strong>
-    </div>
-
-    <div class="summary-row">
-      <span>Pending rewards</span>
-      <strong id="pendingRewards">Loading...</strong>
-    </div>
-
-    <div class="summary-row">
-      <span>WhatsApp status</span>
-      <strong id="whatsappStatus">Offline</strong>
-    </div>
-  </section>
-
-  <div class="notice" id="pageMessage">
-    Loading your account information...
-  </div>
-
-</main>
-
-<nav class="bottom-nav">
-
-  <a href="/home" class="nav-item active">
-    <span class="nav-icon">⌂</span>
-    Home
-  </a>
-
-  <a href="/team" class="nav-item">
-    <span class="nav-icon">♧</span>
-    Team
-  </a>
-
-  <button class="share-nav" aria-label="Share">➦</button>
-
-  <a href="/wallet" class="nav-item">
-    <span class="nav-icon">▣</span>
-    Wallet
-  </a>
-
-  <a href="/account" class="nav-item">
-    <span class="nav-icon">☺</span>
-    Mine
-  </a>
-
-</nav>
-
-<!-- WELCOME ANNOUNCEMENT -->
-
-<div class="popup-overlay" id="welcomePopup"
-     role="dialog" aria-modal="true"
-     aria-labelledby="popupTitle">
-
-  <div class="popup-box">
-
-    <button class="popup-close"
-      onclick="closeWelcomePopup()"
-      aria-label="Close announcement">×</button>
-
-    <h2 class="popup-title" id="popupTitle">
-      🔔 Welcome to LinkEarn!
-    </h2>
-
-    <div class="popup-content">
-
-      <p>
-        🎁 <strong>Welcome aboard!</strong>
-        Your LinkEarn account has been created successfully.
-      </p>
-
-      <p>
-        📱 Complete your account setup and connect your WhatsApp
-        number to begin participating in eligible activities.
-      </p>
-
-      <p>
-        💰 Check your dashboard regularly to see your actual
-        weekly reward eligibility and earnings.
-      </p>
-
-      <p>
-        🏦 Add your bank details to prepare for eligible withdrawals.
-        Make sure your payment information is correct.
-      </p>
-
-      <p>
-        🤝 Share your referral link with friends and invite them
-        to join LinkEarn.
-      </p>
-
-      <p>
-        ✨ <strong>Connect • Participate • Earn eligible rewards</strong>
-      </p>
+        <p class="loading-text">
+            Please wait while we prepare your account.
+        </p>
 
     </div>
 
-    <button type="button"
-  class="popup-action"
-  onclick="closeWelcomePopup()">
-  Complete account setup
-</button>
 
-    <div class="popup-footer">
-      Rewards are subject to platform eligibility rules and available
-      funding. No earnings are guaranteed.
+    <!-- ACCOUNT REVIEW SCREEN -->
+    <div id="reviewScreen">
+
+        <div class="logo" style="margin-left:auto;margin-right:auto;">
+            <svg viewBox="0 0 32 32"
+                 width="43" height="43"
+                 fill="white">
+                <path d="M16 3C8.82 3 3 8.82 3 16c0 2.3.61 4.55 1.77 6.52L3 29l6.68-1.75A12.94 12.94 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.7c-2 0-3.96-.54-5.65-1.56l-.4-.24-3.96 1.04 1.06-3.86-.26-.42A10.65 10.65 0 1 1 16 26.7z"/>
+            </svg>
+        </div>
+
+        <h1>Welcome!</h1>
+
+        <p class="subtitle">
+            Thank you for joining our community.
+            Your registration has been received successfully.
+        </p>
+
+        <div class="status">
+
+            <div class="status-icon">⏳</div>
+
+            <h2>Account Under Review</h2>
+
+            <p>
+                Your account is currently under review.
+                Our team is reviewing your registration.
+                You'll be able to access your account once
+                the review process is completed.
+            </p>
+
+        </div>
+
+        <div class="info">
+
+            <h3>What happens next?</h3>
+
+            <p>
+                • Your registration has been submitted.<br>
+                • Your account is awaiting review.<br>
+                • Check back later for an update.
+            </p>
+
+        </div>
+
+        <button onclick="location.reload()">
+            Refresh Status
+        </button>
+
+        <div class="footer">
+            Independent platform · Not affiliated with WhatsApp
+        </div>
+
     </div>
 
-  </div>
-</div>
-
-<!-- UPDATE NOTIFICATION -->
-
-<div class="update-toast" id="updateToast" role="status">
-  Currently working on an update. Please try again later.
 </div>
 
 <script>
 
-/* CLOSE WELCOME POPUP */
+window.addEventListener("DOMContentLoaded", function() {
 
-function closeWelcomePopup() {
-  document.getElementById("welcomePopup").classList.add("hidden");
-  document.body.classList.remove("popup-open");
-}
+    setTimeout(function() {
 
-document.body.classList.add("popup-open");
+        const loading = document.getElementById("loadingScreen");
+        const review = document.getElementById("reviewScreen");
 
-/* UPDATE NOTIFICATION FOR UNFINISHED FEATURES */
+        loading.style.display = "none";
+        review.style.display = "block";
 
-let toastTimer;
+        requestAnimationFrame(() => {
+            review.style.opacity = "1";
+        });
 
-document.addEventListener("click", function(event) {
+    }, 5000);
 
-  // Allow the welcome popup close button to work.
-  if (
-  event.target.closest(".popup-close") ||
-  event.target.closest(".popup-action")
-) {
-  return;
-  }
-
-  const clickedElement = event.target.closest(
-    "a, button, [role='button']"
-  );
-
-  if (!clickedElement) return;
-
-  event.preventDefault();
-  event.stopPropagation();
-  event.stopImmediatePropagation();
-
-  const toast = document.getElementById("updateToast");
-
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer = setTimeout(function() {
-    toast.classList.remove("show");
-  }, 3000);
-
-}, true);
-
-/* FORMAT NAIRA */
-
-function formatMoney(kobo) {
-  if (
-    kobo === null ||
-    kobo === undefined ||
-    !Number.isFinite(Number(kobo))
-  ) {
-    return "—";
-  }
-
-  return "₦" + (Number(kobo) / 100).toLocaleString("en-NG", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
-
-/* FORMAT WHATSAPP STATUS */
-
-function formatStatus(status) {
-  if (!status) return "Unknown";
-
-  return String(status)
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, letter => letter.toUpperCase());
-}
-
-/* LOAD REAL DASHBOARD DATA */
-
-async function loadHome() {
-  const message = document.getElementById("pageMessage");
-
-  try {
-    const response = await fetch("/api/dashboard", {
-      method: "GET",
-      credentials: "same-origin",
-      headers: {
-        "Accept": "application/json"
-      }
-    });
-
-    if (response.status === 401) {
-      location.replace("/login");
-      return;
-    }
-
-    if (!response.ok) {
-      throw new Error("Unable to retrieve account information.");
-    }
-
-    const data = await response.json();
-
-    if (!data.user || !data.wallet || !data.whatsapp) {
-      throw new Error("Dashboard data is incomplete.");
-    }
-
-    // Logged-in username
-    document.getElementById("dashboardUsername").textContent =
-      data.user.username || "User";
-
-    // Real wallet information from PostgreSQL
-    document.getElementById("balance").textContent =
-      formatMoney(data.wallet.availableBalanceKobo);
-
-    document.getElementById("totalEarned").textContent =
-      formatMoney(data.wallet.totalEarnedKobo);
-
-    document.getElementById("pendingRewards").textContent =
-      formatMoney(data.wallet.pendingRewardKobo);
-
-    // Real WhatsApp status from PostgreSQL
-    document.getElementById("whatsappStatus").textContent =
-      formatStatus(data.whatsapp.status);
-
-    message.textContent =
-      "Welcome, " + (data.user.username || "User");
-
-    message.classList.remove("error");
-
-  } catch (error) {
-    message.textContent = error.message;
-    message.classList.add("error");
-
-    document.getElementById("dashboardUsername").textContent = "Unavailable";
-    document.getElementById("balance").textContent = "Unavailable";
-    document.getElementById("totalEarned").textContent = "Unavailable";
-    document.getElementById("pendingRewards").textContent = "Unavailable";
-    document.getElementById("whatsappStatus").textContent = "Unavailable";
-  }
-}
-
-loadHome();
+});
 
 </script>
 
